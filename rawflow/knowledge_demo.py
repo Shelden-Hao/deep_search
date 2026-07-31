@@ -1,13 +1,13 @@
 import os.path
 
 # 导入依赖
-from ragflow_sdk import RAGFlow #链接rag服务的客户端
+from ragflow_sdk import RAGFlow  # 链接rag服务的客户端
 from rawflow.rag_config import _load_ragflow_env
 
-
 # 创建一个ragflow的客户端
-api_key,base_url =_load_ragflow_env()
-ragflow_client = RAGFlow(api_key=api_key,base_url=base_url)
+api_key, base_url = _load_ragflow_env()
+ragflow_client = RAGFlow(api_key=api_key, base_url=base_url)
+
 
 # 代码创建知识库
 def create_knowledge_base(knowledge_base_name, description):
@@ -16,15 +16,17 @@ def create_knowledge_base(knowledge_base_name, description):
     名字和描述一定要准确的写！agent调用哪个聊天助手看聊天助手的描述和他对应知识库的描述！
     :param knowledge_base_name: 名字
     :param description: 描述
-    :return:
+    :return: 知识库
     """
-    ds = ragflow_client.create_dataset(name=knowledge_base_name, description=description,embedding_model="text-embedding-v3@Tongyi-Qianwen")
+    ds = ragflow_client.create_dataset(name=knowledge_base_name, description=description,
+                                       embedding_model="text-embedding-v3@Tongyi-Qianwen")
     print(f"创建知识库成功：{ds},{ds.id}")
 
 
 if __name__ == '__main__':
     # 创建知识库
-    create_knowledge_base("代码创建的知识库111", "今晚打老虎！！",)
+    create_knowledge_base("代码创建的知识库111", "今晚打老虎！！", )
+
 
 # 使用上传文件到知识库
 def upload_file_to_knowledge_base(kb_id, file_paths):
@@ -33,13 +35,13 @@ def upload_file_to_knowledge_base(kb_id, file_paths):
     """
     # 1.链接ragflow的客户端
     # 2.获取传入文件的知识库对象
-    datasets = ragflow_client.list_datasets(id=kb_id,page=1,page_size=10)
+    datasets = ragflow_client.list_datasets(id=kb_id, page=1, page_size=10) # 此时的 page 和 page_size 只是用作举例说明，实际上只会根据 ID 得到唯一的知识库
     dataset = datasets[0]
     # 3.文件包装成对应的上传dict格式
-    document_list = [] # 存储上传文件的列表
+    document_list = []  # 存储上传文件的列表
     for file_path in file_paths:
         # file_path 文件的地址
-        file_name = os.path.basename(file_path) # 获取文件名
+        file_name = os.path.basename(file_path)  # 获取文件名
         with open(file_path, 'rb') as f:
             blob = f.read()
             document_list.append({
