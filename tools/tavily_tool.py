@@ -40,7 +40,7 @@ def internet_search(
     :param include_raw_content: 是否返回原内容 False 精简 True 详细
     :return: 
     """
-    # 每次调用工具，都都会向前端推进调用进度！
+    # 每次调用工具，都都会向前端推进调用进度！（这里可以有两种方式：1. 调用工具内部向前端进行推送。2. 判断大模型的意图，如果大模型执行工具，那么就做埋点监控）
     # 参数1： 工具的名字  参数2： 就是调用工具的参数信息
     monitor.report_tool(tool_name="网络搜索工具",
                         args={"query": query, "topic": topic, "max_results": max_results,
